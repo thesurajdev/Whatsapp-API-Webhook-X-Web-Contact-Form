@@ -81,7 +81,7 @@
             });
 
             // Define the webhook URL
-            const webhookUrl = 'https://flow-api.doubletick.io/v1/public/triggers/webhooks/8d940d63-4b52-4914-b402-29ee468bc541';
+            const webhookUrl = 'https://flow-api.doubletick.io/v1/public/triggers/webhooks/47a3b4ea-9886-4c89-970f-5ca9fe88b270';
 
             // Send data to the webhook URL
             fetch(webhookUrl, {
@@ -91,7 +91,15 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response Status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Request failed with status ${response.status}: ${text}`);
+                    });
+                }
+                return response.json();
+            })
             .then(result => {
                 console.log('Success:', result);
                 alert('Form submitted successfully!');
